@@ -49,7 +49,7 @@ class CX_COA_Ads {
    	    $post_types = array( 'post', 'page' );
         
 		// Only continue when $post is valid and its a supported post type.
-       	if ( ! $post || ! in_array( $post->post_type, $post_types, true ) ) {
+       	if ( ! $post || ! is_single() || ! in_array( $post->post_type, $post_types, true ) ) {
 			return $content;
 		}
 
