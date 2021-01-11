@@ -22,9 +22,17 @@ jQuery( document ).ready( function( $ ){
 			html += ', <a href="' + authorLink + '" title="' + authorName + '" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">'	+ authorName + '</a>';
 		} );
 
+		/** 
+		 * Now find the closest span parent of the author element,
+		 * this is needed cause different themes have different designs.
+		 * This is coded based on the fact that all author close parent element
+		 * are span, no matter the theme, if not, oh well :).
+		 */
+		$parentauthorEl = $authorEl.closest( 'span' );
+
 		// Add to the "posted by" section 🚀.
-		$authorEl.append( html );
+		$parentauthorEl.append( html );
 	};
 
-	displayCoAuthors( $( '.post-author' ) );
+	displayCoAuthors( $( 'a[rel="author"]' ) );
 });
