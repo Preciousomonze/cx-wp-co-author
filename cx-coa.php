@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: CodeXplorer WP Post Co-Author
- * Plugin URI: https://github.com/Preciousomonze/cx-wp-co-autho
- * Description: CodeXplorer WP Post Multiple Author with Ads.
- * Author: Precious Omonzejele (CodeXplorer 🤾🏽‍♂️🥞🦜🤡)
- * Author URI: https://codexplorer.ninja
+ * Plugin Name: Geektutor WP Post Co-Author
+ * Plugin URI: https://github.com/geektutor/cx-wp-co-author
+ * Description: Geektutor WP Post Multiple Author with Ads.
+ * Author: Sodiq Akinjobi (Geektutor)
+ * Author URI: https://geektutor.xyz
  * Version: 1.0.0
  * Requires at least: 5.0
  * Tested up to: 5.5

@@ -98,8 +98,6 @@ final class CX_COA {
      * load plugin files
      */
     public static function includes() {
-
-		include_once CX_COA_ABSPATH . 'includes/admin/api/class-cx-coa-gutenberg-api.php';
 		include_once CX_COA_ABSPATH . 'includes/class-cx-coa-co-authors.php';
 		include_once CX_COA_ABSPATH . 'includes/class-cx-coa-ads.php';
 
