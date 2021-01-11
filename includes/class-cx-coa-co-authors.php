@@ -91,13 +91,14 @@ class CX_COA_Co_Authors {
         $span_data  = array();
 
         foreach ( $co_authors as $co_author ) {
-			if ( ! empty( $new_link ) ) {
-				$new_link .= ', ';
-			}
-            $span_data[] = array(
-                'link' => ( ! empty( $co_author->user_url ) ? $co_author->user_url : get_author_posts_url( $co_author->ID ) ),
-                'name' => $co_author->display_name,
-            );
+			// Omit the default author, incase.
+			if ( $post->author_id !== $co_author->ID ) {
+             
+           		$span_data[] = array(
+            	   'link' => ( ! empty( $co_author->user_url ) ? $co_author->user_url : get_author_posts_url( $co_author->ID ) ),
+                    'name' => $co_author->display_name,
+                );
+            }
         }
 
         // add it to a span tag with data attribute.
