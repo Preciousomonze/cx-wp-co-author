@@ -92,7 +92,7 @@ class CX_COA_Co_Authors {
 
         foreach ( $co_authors as $co_author ) {
 			// Omit the default author, incase.
-			if ( $post->author_id !== $co_author->ID ) {
+			if ( $post->post_author !== $co_author->ID ) {
              
            		$span_data[] = array(
             	   'link' => ( ! empty( $co_author->user_url ) ? $co_author->user_url : get_author_posts_url( $co_author->ID ) ),
