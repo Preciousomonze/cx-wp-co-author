@@ -19,7 +19,7 @@ jQuery( document ).ready( function( $ ){
 			authorName = author.name;
 			authorLink = author.link;
 
-			html += ', <a href="' + authorLink + '" title="' + authorName + '" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">'	+ authorName + '</a>';
+			html += ', <a href="' + authorLink + '" rel="author">'	+ authorName + '</a>';
 		} );
 
 		/** 
