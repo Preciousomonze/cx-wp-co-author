@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="Geekyutor-CS">
-	<description>Geektutor Coding Standard</description>
+<ruleset name="CodeXplorer-CS">
+	<description>CodeXplorer Coding Standard</description>
     
     <!-- Exclude paths -->
 	<exclude-pattern>*/tests/</exclude-pattern>

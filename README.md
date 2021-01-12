@@ -1,2 +1,2 @@
 # cx-wp-co-author
-Geektutor WP Post Multiple Author with Ads
+CodeXplorer WP Post Multiple Author with Ads
