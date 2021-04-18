@@ -102,7 +102,6 @@ final class CX_COA {
      */
     public static function includes() {
 		include_once CX_COA_ABSPATH . 'includes/class-cx-coa-co-authors.php';
-		include_once CX_COA_ABSPATH . 'includes/class-cx-coa-ads.php';
 
         // Admin side.
         if ( self::is_request( 'admin' ) ) {

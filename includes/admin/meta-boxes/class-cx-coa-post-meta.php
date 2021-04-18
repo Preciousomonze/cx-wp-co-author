@@ -36,7 +36,6 @@ class CX_COA_Post_Meta {
 		}
 
         update_post_meta( $post_id, 'cx_coa_co_authors', sanitize_text_field( $_POST['cx_coa_co_authors'] ) );
-        update_post_meta( $post_id, 'cx_coa_ad_link', sanitize_text_field( $_POST['cx_coa_ad_link'] ) );
 
 		return $post_id;
 	}

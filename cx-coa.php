@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CodeXplorer WP Post Co-Author
  * Plugin URI: https://github.com/preciousomonze/cx-wp-co-author
- * Description: CodeXplorer WP Post Multiple Author with Ads.
+ * Description: CodeXplorer WP Post Multiple Authors.
  * Author: Precious Omonzejele (CodeXplorer 🤾🏽‍♂️🥞🦜🤡)
  * Author URI: https://codexplorer.ninja
  * Version: 1.0.0
