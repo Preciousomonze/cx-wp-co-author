@@ -11,7 +11,7 @@ module.exports = {
 		path: path.resolve( __dirname, 'assets/js/dist' ),
 	},
 	externals: {
-		'react': React,
-		'react-dom': ReactDOM,
+		'react': 'React',
+		'react-dom': 'ReactDOM',
 	}
 };
