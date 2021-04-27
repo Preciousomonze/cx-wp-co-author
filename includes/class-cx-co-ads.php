@@ -4,12 +4,12 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Main Class to load.
  */
-final class CX_COA {
+final class CX_CO_ADS {
 
     /**
      * The single instance of the class.
      *
-     * @var CX_COA
+     * @var CX_CO_ADS
      * @since 1.0.0
      */
     protected static $_instance = null;
@@ -36,7 +36,7 @@ final class CX_COA {
          *
          * @since 1.0.0
          */
-        do_action( 'cx_coa_init' );
+        do_action( 'cx_co_ads_init' );
     }
 
     /**
@@ -63,9 +63,9 @@ final class CX_COA {
      * Constants define
      */
     private static function define_constants() {
-        self::define( 'CX_COA_ABSPATH', dirname( CX_COA_PLUGIN_FILE ) . '/' );
-        self::define( 'CX_COA_PLUGIN_FILE', plugin_basename( CX_COA_PLUGIN_FILE ) );
-		self::define( 'CX_COA_PLUGIN_VERSION', '1.0.0' );
+        self::define( 'CX_CO_ADS_ABSPATH', dirname( CX_CO_ADS_PLUGIN_FILE ) . '/' );
+        self::define( 'CX_CO_ADS_PLUGIN_FILE', plugin_basename( CX_CO_ADS_PLUGIN_FILE ) );
+		self::define( 'CX_CO_ADS_PLUGIN_VERSION', '1.0.0' );
     }
 
     /**
@@ -101,12 +101,11 @@ final class CX_COA {
      * load plugin files
      */
     public static function includes() {
-		include_once CX_COA_ABSPATH . 'includes/class-cx-coa-co-authors.php';
-		include_once CX_COA_ABSPATH . 'includes/class-cx-coa-ads.php';
+		include_once CX_CO_ADS_ABSPATH . 'includes/class-cx-co-ads-advert.php';
 
         // Admin side.
         if ( self::is_request( 'admin' ) ) {
-			include_once CX_COA_ABSPATH . 'includes/admin/meta-boxes/class-cx-coa-post-meta.php';
+			include_once CX_CO_ADS_ABSPATH . 'includes/admin/meta-boxes/class-cx-co-ads-post-meta.php';
 		}
     }
      /**
@@ -115,7 +114,7 @@ final class CX_COA {
      * @return string path
      */
     public static function plugin_url() {
-        return untrailingslashit( plugins_url( '/', CX_COA_PLUGIN_FILE ) );
+        return untrailingslashit( plugins_url( '/', CX_CO_ADS_PLUGIN_FILE ) );
     }
 	
     /**
@@ -124,7 +123,7 @@ final class CX_COA {
 	 * @since  1.0.0
 	 */
 	public static function load_textdomain() {
-		load_plugin_textdomain( 'cx-coa', false, plugin_basename( dirname( CX_COA_PLUGIN_FILE ) ) . '/languages' );
+		load_plugin_textdomain( 'cx-co-ads', false, plugin_basename( dirname( CX_CO_ADS_PLUGIN_FILE ) ) . '/languages' );
     }
 
 
@@ -135,8 +134,8 @@ final class CX_COA {
 	 */
 	public static function load_scripts() {
 
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'cx-coa-co-authors-js', self::plugin_url() . '/assets/js/co-authors' . $suffix . '.js', array( 'jquery' ), CX_COA_PLUGIN_VERSION );
+		// $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		// wp_enqueue_script( 'cx-coa-co-authors-js', self::plugin_url() . '/assets/js/co-authors' . $suffix . '.js', array( 'jquery' ), CX_CO_ADS_PLUGIN_VERSION );
 
 	}
 
@@ -152,7 +151,7 @@ final class CX_COA {
 	 */
 	public static function enqueue_assets( $hook ) {
 		// Add styles and scripts for block editor.
-    	wp_enqueue_script( 'cx-coa-gutenberg-sidebar', self::plugin_url() . '/assets/js/dist/post-sidebar.js', array( 'wp-plugins', 'wp-edit-post', 'wp-i18n', 'wp-element' ), CX_COA_PLUGIN_VERSION );
+    	wp_enqueue_script( 'cx-co-ads-gutenberg-sidebar', self::plugin_url() . '/assets/js/dist/post-sidebar.js', array( 'wp-plugins', 'wp-edit-post', 'wp-i18n', 'wp-element' ), CX_CO_ADS_PLUGIN_VERSION );
 	}
 
 }

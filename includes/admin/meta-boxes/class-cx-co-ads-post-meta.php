@@ -2,9 +2,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class CX_COA_Post_Meta.
+ * Class CX_CO_ADS_Post_Meta.
  */
-class CX_COA_Post_Meta {
+class CX_CO_ADS_Post_Meta {
 
     /**
      * Initialiseeee
@@ -35,12 +35,11 @@ class CX_COA_Post_Meta {
 			return $post_id;
 		}
 
-        update_post_meta( $post_id, 'cx_coa_co_authors', sanitize_text_field( $_POST['cx_coa_co_authors'] ) );
-        update_post_meta( $post_id, 'cx_coa_ad_link', sanitize_text_field( $_POST['cx_coa_ad_link'] ) );
+        update_post_meta( $post_id, 'cx_co_ads_ad_link', sanitize_text_field( $_POST['cx_co_ads_ad_link'] ) );
 
 		return $post_id;
 	}
 
 }
 
-CX_COA_Post_Meta::init();
+CX_CO_ADS_Post_Meta::init();

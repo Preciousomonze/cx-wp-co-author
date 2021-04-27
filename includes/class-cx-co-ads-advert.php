@@ -2,9 +2,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class CX_COA_Ads.
+ * Class CX_CO_Ads.
  */
-class CX_COA_Ads {
+class CX_CO_ADS_Advert {
 
     /**
      * Initialiseeee
@@ -26,7 +26,7 @@ class CX_COA_Ads {
 	 */
 	public static function register_meta() {
         // Ads.
-		register_meta( 'post', 'cx_coa_ad_link', array(
+		register_meta( 'post', 'cx_co_ads_ad_link', array(
 			'show_in_rest'      => true,
 			'type'              => 'string',
 			'single'            => true,
@@ -53,7 +53,7 @@ class CX_COA_Ads {
 			return $content;
 		}
 
-		$ad_link = trim( get_post_meta( $post->ID, 'cx_coa_ad_link', true ) );
+		$ad_link = trim( get_post_meta( $post->ID, 'cx_co_ads_ad_link', true ) );
 
 		if ( empty( $ad_link ) ) {
 			return $content;
@@ -105,4 +105,4 @@ class CX_COA_Ads {
     }
 }
 
-CX_COA_Ads::init();
+CX_CO_ADS_Advert::init();

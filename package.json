@@ -1,9 +1,9 @@
 {
-  "title": "CodeXplorer WP Post Co-Author",
+  "title": "CodeXplorer WP Post Ads",
   "name": "cx-wp-co-author",
   "domain": "cx-coa",
   "version": "1.0.0",
-  "description": "CodeXplorer WP Post Multiple Author with Ads",
+  "description": "CodeXplorer WP Post with Ads",
   "main": "Gruntfile.js",
   "license": "GPL-3.0",
   "repository": {
@@ -38,7 +38,7 @@
     "npm-check-updates": "^8.0.3"
   },
   "scripts": {
-    "compress-zip": "php wp-plugin-deploy-helper.php --plugin_name=cx-wp-co-author --ignore_file_path=.git,.wordpress-org,node_modules,vendor,.vscode,.sh --delete_files_in_zip=wp-plugin-deploy-helper.php,package-lock.json,composer.lock,.eslintrc.json,.distignore",
+    "compress-zip": "php wp-plugin-deploy-helper.php --plugin_name=cx-wp-ads --ignore_file_path=.git,.wordpress-org,node_modules,vendor,.vscode,.sh --delete_files_in_zip=wp-plugin-deploy-helper.php,package-lock.json,composer.lock,.eslintrc.json,.distignore",
     "deploy": "npm run compress-zip",
     "start": "wp-scripts start",
     "build": "wp-scripts build"
