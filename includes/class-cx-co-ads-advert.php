@@ -66,6 +66,16 @@ class CX_CO_ADS_Advert {
 			return $content;
 		}
 
+		// Check if ad was enabled or disabled for this post.
+		if ( metadata_exists( 'post', $post->ID, 'cx_co_ads_enable_ads' ) ) {
+			$ad_enabled = get_post_meta( $post->ID, 'cx_co_ads_enable_ads', true );
+
+			if ( empty( $ad_enabled ) ) { // It was disabled.
+				return $content;
+			}
+		}
+		
+
 		$ad_link = trim( get_post_meta( $post->ID, 'cx_co_ads_ad_link', true ) );
 
 		if ( empty( $ad_link ) ) {

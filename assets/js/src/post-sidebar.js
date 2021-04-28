@@ -44,7 +44,7 @@ AdLinkMetaField = withDispatch(
 let ToggleEnableAds = ( ({enabled, onUpdateRestrict}) => {
     return (
     <ToggleControl
-        label='Enable Ads for this post.'
+        label='Enable Ads for this post.<small>(Ignore to use global settings)</small>'
         help={ enabled ? 'Ads display enabled' : 'Ads display disabled' }
         checked={enabled}
         onChange={(enabled) => { onUpdateRestrict(enabled); }
@@ -59,7 +59,7 @@ ToggleEnableAds = withSelect( ( select ) => {
     } )(ToggleEnableAds);
 
  ToggleEnableAds = withDispatch(
-    (dispatch) => {
+    ( dispatch ) => {
         return {
             onUpdateRestrict: (value) => {
                 dispatch('core/editor').editPost(
