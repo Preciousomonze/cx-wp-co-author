@@ -3,7 +3,9 @@ import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { __ } from "@wordpress/i18n";
 import { TextControl } from "@wordpress/components";
 import { withSelect, withDispatch } from "@wordpress/data";
-
+import { ToggleControl } from '@wordpress/components';
+import { withState } from '@wordpress/compose';
+ 
 /**
  * AD Link section.
  */
@@ -37,16 +39,52 @@ AdLinkMetaField = withDispatch(
     }
 )(AdLinkMetaField);
 
+
+// Enable/Disable ads display toggle.
+let ToggleEnableAds = ( ({enabled, onUpdateRestrict}) => {
+    return (
+    <ToggleControl
+        label='Enable Ads for this post.'
+        help={ enabled ? 'Ads display enabled' : 'Ads display disabled' }
+        checked={enabled}
+        onChange={(enabled) => { onUpdateRestrict(enabled); }
+        }
+        />
+    )});
+
+ToggleEnableAds = withSelect( ( select ) => {
+        return {
+            enabled: select( 'core/editor' ).getEditedPostAttribute( 'meta' )['cx_co_ads_enable_ads']
+        };
+    } )(ToggleEnableAds);
+
+ ToggleEnableAds = withDispatch(
+    (dispatch) => {
+        return {
+            onUpdateRestrict: (value) => {
+                dispatch('core/editor').editPost(
+                    { meta: { cx_co_ads_enable_ads: value } }
+                );
+            }
+        }
+    }
+)(ToggleEnableAds);
+
+
+
+// Adding all to the panel.
 const PluginDocumentSettingPanelAds = (props) => (
 	<PluginDocumentSettingPanel
 		name="cx-co-ads-adlink-panel"
 		title={__("Advert link", "cx-co-ads")}
 		className="cx-co-ads-adlink-panel"
 	>
+        <ToggleEnableAds />
 		<AdLinkMetaField />
 	</PluginDocumentSettingPanel>
 );
 
+// Register.
 registerPlugin( 'plugin-document-setting-panel-adlink', {
 	render: PluginDocumentSettingPanelAds,
 	icon: 'link',

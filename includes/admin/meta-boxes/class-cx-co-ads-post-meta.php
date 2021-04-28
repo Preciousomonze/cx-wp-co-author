@@ -36,6 +36,7 @@ class CX_CO_ADS_Post_Meta {
 		}
 
         update_post_meta( $post_id, 'cx_co_ads_ad_link', sanitize_text_field( $_POST['cx_co_ads_ad_link'] ) );
+		update_post_meta( $post_id, 'cx_co_ads_enable_ads', sanitize_text_field( $_POST['cx_co_ads_enable_ads'] ) );
 
 		return $post_id;
 	}

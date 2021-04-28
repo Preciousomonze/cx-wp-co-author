@@ -35,12 +35,25 @@ class CX_CO_ADS_Advert {
 				return current_user_can( 'edit_posts' );
 			}
 		));
+
+		// Toggle ads display per post.
+		register_meta( 'post', 'cx_co_ads_enable_ads', array(
+			'show_in_rest'      => true,
+			'type'              => 'boolean',
+			'single'            => true,
+			'sanitize_callback' => 'sanitize_text_field',
+			'auth_callback'     => function() { 
+				return current_user_can( 'edit_posts' );
+			}
+		));
+	
     }
 
     /**
      * Place ad content in Post where necessary.
      * 
      * @param string $content
+	 * @return string
      */
     public static function place_ad_content( $content ) {
 		global $post;
@@ -69,15 +82,16 @@ class CX_CO_ADS_Advert {
 		}
 
         // After what paragraph to add ad content. Note. values in quote are "x to the last paragraph".
-		$ad_sections   = array( 4, 10, '3' );
+		$ad_sections   = array( 4, 12 );
 		$section_count = 0; // Use this to know the next paragraph to add ad content :).
+		$paragraph_min = 12; // If our paragraph is less than these, don't show ads.
 
-		// Is our paragraph less than 10?
-		if ( $p_count < 10 ) {
-			$ad_sections = array( 5 );
+		// Is our paragraph less than the min? then don't show ads.
+		if ( $p_count < $paragraph_min ) {
+			return $content;
 		}
 
-		$ads_content = '<a class="cx-coa-adspace" href="' . esc_attr( $ad_link ) . '" style="margin:50px 0;display:block;">' . $ad_link . '</a>';
+		$ads_content = '<a class="cx-co-ads-adspace" href="' . esc_attr( $ad_link ) . '" style="margin:50px 0;display:block;">' . $ad_link . '</a>';
 		
 		for ( $i = 0; $i < count( $paragraphs ); $i++ ) {
 			$p_num              = $i + 1;
