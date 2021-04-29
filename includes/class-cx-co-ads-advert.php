@@ -66,15 +66,27 @@ class CX_CO_ADS_Advert {
 			return $content;
 		}
 
+		$ad_post_globe_enabled = false;
 		// Check if ad was enabled or disabled for this post.
 		if ( metadata_exists( 'post', $post->ID, 'cx_co_ads_enable_ads' ) ) {
-			$ad_enabled = get_post_meta( $post->ID, 'cx_co_ads_enable_ads', true );
+			$ad_enabled = trim( get_post_meta( $post->ID, 'cx_co_ads_enable_ads', true ) );
 
 			if ( empty( $ad_enabled ) ) { // It was disabled.
 				return $content;
 			}
+			else {
+				$ad_post_globe_enabled = true;
+			}
 		}
-		
+
+		if ( ! $ad_post_globe_enabled ) {
+			// Check the global settings option.
+			$ad_enabled_global_settings = get_option( 'cx_co_ads_enable_ads', '' );
+
+			if ( empty( $ad_enabled_global_settings ) ) { // Disabled.
+				return $content;
+			}
+		}
 
 		$ad_link = trim( get_post_meta( $post->ID, 'cx_co_ads_ad_link', true ) );
 
