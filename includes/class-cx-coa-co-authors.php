@@ -43,9 +43,10 @@ class CX_COA_Co_Authors {
 	 * Get the Co Authors Details.
 	 *
 	 * @param int $post_id
+	 * @param int $current_author (optional) Helps to skip the current author if theres a valid int.
 	 * @return array
 	 */
-	public static function get_co_authors( $post_id ) {
+	public static function get_co_authors( $post_id, $current_author = 0 ) {
 		$co_authors = get_post_meta( $post_id, 'cx_coa_co_authors', true );
 
 		if ( empty( $co_authors ) ) {
@@ -57,10 +58,16 @@ class CX_COA_Co_Authors {
 
         foreach( $co_authors_data as $co_author ) {
 			$user = get_user_by( 'login', $co_author );
-			if ( $user ) {
-				$co_authors_details[] = $user; 
+
+			if ( $user && $user->ID !== $current_author ) {
+				$_co_authors_details['user_obj'] = $user;
+
+				// Get the meta.
+				$meta = get_user_meta( $user->ID );
+				$co_authors_details[] = array_merge( $_co_authors_details, array( 'meta' => $meta ) );
 			}
 		}
+
 		return $co_authors_details;
 	}
 
@@ -82,28 +89,86 @@ class CX_COA_Co_Authors {
 			return $content;
 		}
 
-        $co_authors = self::get_co_authors( $post->ID );
+        $co_authors = self::get_co_authors( $post->ID, $post->post_author );
         
         if ( empty( $co_authors ) ) {
             return $content;
         }
-        
-        $span_data  = array();
-
-        foreach ( $co_authors as $co_author ) {
-			// Omit the default author, incase.
-			if ( $post->post_author !== $co_author->ID ) {
-             
-           		$span_data[] = array(
-            	   'link' => ( ! empty( $co_author->user_url ) ? $co_author->user_url : get_author_posts_url( $co_author->ID ) ),
-                    'name' => $co_author->display_name,
-                );
-            }
-        }
 
         // add it to a span tag with data attribute.
-        $co_authors_html = '<span class="cx-coa-authors-data" data-cx_coa_co_authors=\'' . json_encode( $span_data ) . '\'></span>';
-		return $co_authors_html . $content;
+        $co_authors_span_html = self::get_co_authors_span_html( $co_authors );
+
+		// Display this after the content.
+		$co_authors_banner_html = self::get_co_authors_banner_html( $co_authors );
+
+		return $co_authors_span_html . $content . $co_authors_banner_html;
+	}
+
+	/**
+	 * Get Co Author Span HTML.
+	 *
+	 * Gets the data and returns it as html.
+	 *
+	 * @param array $co_authors
+	 * @return string The span class ready to be displayed.
+	 */
+	public static function get_co_authors_span_html( $co_authors ) {
+		$span_data = array();
+
+        foreach ( $co_authors as $co_author_details ) {
+			$co_author = $co_author_details['user_obj'];
+    
+           	$span_data[] = array(
+            	'link' => ( ! empty( $co_author->user_url ) ? $co_author->user_url : get_author_posts_url( $co_author->ID ) ),
+                'name' => $co_author->display_name,
+            );
+            
+        }
+
+        // Add it to a span tag with data attribute.
+        return '<span class="cx-coa-authors-data" data-cx_coa_co_authors=\'' . json_encode( $span_data ) . '\'></span>';
+	}
+
+	/**
+	 * Get Co Author banner data.
+	 *
+	 * Gets the author data and displays it with pics and stuff.
+	 *
+	 * @param string $co_authors
+	 * @return string
+	 */
+	public static function get_co_authors_banner_html( $co_authors ) {
+		$html = '<hr><section class="cx-coa-authors-banner><div class="row">';
+		$author_count = count( $co_authors );
+
+        foreach ( $co_authors as $co_author_details ) {
+			$co_author      = $co_author_details['user_obj'];
+			$co_author_meta = $co_author_details['meta'];
+
+			$col_value = 12/$author_count;
+
+			$first_last_name = ( ! empty( $co_author_meta['firstname'][0] ) && ! empty( $co_author_meta['lastname'][0] ) 
+			? $co_author_meta['firstname'][0]  . ' ' . $co_author_meta['lastname'][0] : $co_author->display_name );
+
+           	$html .= '<div class="cx-coa-author-details col-sm-' . $col_value . '">
+			   <div class="row">
+			   	<div class="col-sm-12 img-holder">
+				   <img src="' . get_avatar_url( $co_author->ID ) . '" alt="' . $co_author->display_name . '">
+				</div>
+				<div class="col-sm-12 name">
+				<h3>' . $first_last_name. '</h3>
+				<h4 class="username">' .  $co_author->user_nicename. '</h4>
+				<p class="desc">' . $co_author_meta['description'][0] . '</p>
+				<hr>
+				</div>
+			   </div>
+ 
+			</div>';
+        }
+
+		$html .= '</div></section>';
+		return $html;
+
 	}
 
 }

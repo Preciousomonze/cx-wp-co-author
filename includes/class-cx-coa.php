@@ -133,10 +133,10 @@ final class CX_COA {
 	 * @since 1.0.0
 	 */
 	public static function load_scripts() {
-
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_script( 'cx-coa-co-authors-js', self::plugin_url() . '/assets/js/co-authors' . $suffix . '.js', array( 'jquery' ), CX_COA_PLUGIN_VERSION );
-
+        wp_enqueue_style( 'cx-coa-grid', self::plugin_url() . '/assets/css/grid' . $suffix . '.css', array(), CX_COA_PLUGIN_VERSION );
+	    wp_enqueue_style( 'cx-coa-style', self::plugin_url() . '/assets/css/style' . $suffix . '.css', array( 'cx-coa-grid' ), CX_COA_PLUGIN_VERSION );
 	}
 
 	/*-----------------------------------------------------------------------------------*/

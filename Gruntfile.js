@@ -30,7 +30,26 @@ module.exports = function(grunt) {
 		  },
 		  all: ["assets/js/*.js", "!assets/js/*.min.js"]
 	  },
-  
+		cssmin: {
+			admin: {
+				files: [{
+					expand: true,
+					cwd: 'assets/css/',
+					src: [ '*.css', '!*.min.css' ],
+					dest: 'assets/css/',
+					ext: '.min.css'
+				}]
+			},
+			frontend: {
+				files: [{
+					expand: true,
+					cwd: 'assets/css',
+					src: [ '*.css', '!*.min.css' ],
+					dest: 'assets/css',
+					ext: '.min.css'
+				}]
+			}
+		},
 	  clean: {
 		  //Clean up build folder
 		  main: ['build/<%= pkg.name %>']
@@ -145,7 +164,8 @@ module.exports = function(grunt) {
   });
   
   grunt.registerTask( 'docs', [ 'wp_readme_to_markdown'] );
-  grunt.registerTask( 'build', [ 'jshint', 'uglify', 'replace', 'makepot' ] );
+  grunt.registerTask('assets', [ 'jshint', 'replace', 'uglify', 'cssmin' ] );
+  grunt.registerTask( 'build', [ 'assets', 'makepot' ] );
   grunt.registerTask( 'make', [ 'build', 'clean', 'copy' ] );
   
   };
