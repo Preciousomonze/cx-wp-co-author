@@ -65,32 +65,46 @@ class CX_CO_ADS_Advert {
        	if ( ! $post || ! is_single() || ! in_array( $post->post_type, $post_types, true ) ) {
 			return $content;
 		}
+		// Add the is_active plugin logic here. not added for now.
+		#######
 
-		$ad_post_globe_enabled = false;
-		// Check if ad was enabled or disabled for this post.
-		if ( metadata_exists( 'post', $post->ID, 'cx_co_ads_enable_ads' ) ) {
-			$ad_enabled = trim( get_post_meta( $post->ID, 'cx_co_ads_enable_ads', true ) );
+		$ad_post_globe_override = false;
+		$ad_shortcode = false;
 
-			if ( empty( $ad_enabled ) ) { // It was disabled.
-				return $content;
-			}
-			else {
-				$ad_post_globe_enabled = true;
+		// Is global settings overriden for this post?
+		if ( metadata_exists( 'post', $post->ID, 'cx_co_ads_override_global_settings' ) &&
+		! empty( trim( get_post_meta( $post->ID, 'cx_co_ads_override_global_settings', true ) ) ) ) {
+			
+			$ad_post_globe_override = true;
+	
+			// Check if ad was enabled or disabled for this post.
+			if ( metadata_exists( 'post', $post->ID, 'cx_co_ads_enable_ads' ) ) {
+				$ad_enabled = trim( get_post_meta( $post->ID, 'cx_co_ads_enable_ads', true ) );
+
+				if ( empty( $ad_enabled ) ) { // It was disabled.
+					return $content;
+				}
+				else { // Get shortcode.
+					$ad_shortcode = trim( get_post_meta( $post->ID, 'cx_co_ads_ad_shortcode', true ) );
+				}
 			}
 		}
 
-		if ( ! $ad_post_globe_enabled ) {
+		if ( ! $ad_post_globe_override ) {
 			// Check the global settings option.
 			$ad_enabled_global_settings = get_option( 'cx_co_ads_enable_ads', '' );
 
 			if ( empty( $ad_enabled_global_settings ) ) { // Disabled.
 				return $content;
 			}
+			else { // Get global shortcode.
+				$ad_shortcode = trim( get_option( 'cx_co_ads_ad_shortcode', false ) );
+				
+			}
 		}
 
-		$ad_link = trim( get_post_meta( $post->ID, 'cx_co_ads_ad_link', true ) );
-
-		if ( empty( $ad_link ) ) {
+	
+		if ( empty( $ad_shortcode ) ) {
 			return $content;
 		}
 
@@ -113,7 +127,7 @@ class CX_CO_ADS_Advert {
 			return $content;
 		}
 
-		$ads_content = '<a class="cx-co-ads-adspace" href="' . esc_attr( $ad_link ) . '" style="margin:50px 0;display:block;">' . $ad_link . '</a>';
+		$ads_content = '<div class="cx-co-ads-adspace">' . do_shortcode( $ad_shortcode ). '</div>';
 		
 		for ( $i = 0; $i < count( $paragraphs ); $i++ ) {
 			$p_num              = $i + 1;
@@ -139,6 +153,26 @@ class CX_CO_ADS_Advert {
 		$content = implode( $splitter, $paragraphs );
 		return $content;
     }
+
+    /**
+ 	 * Checks if the other ad plugin is active.
+	 *
+	 * @param string $plugin The Plugin bootstrap file.
+	 * @return bool
+	 */
+	public static function is_plugin_active( $plugin ) {
+		$active_plugins = ( array ) get_option( 'active_plugins', array() );
+
+        if ( is_multisite() ) {
+            $active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
+        }
+
+        return in_array( $plugin, $active_plugins ) || array_key_exists( $plugin, $active_plugins );
+
+	}
+
 }
+
+
 
 CX_CO_ADS_Advert::init();

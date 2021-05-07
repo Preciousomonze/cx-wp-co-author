@@ -17,13 +17,6 @@ class CX_CO_ADS_Settings {
 	protected static $current_user_id = 0;
 
 	/**
-	 * The notice message.
-	 * 
-	 * @var string
-	 */
-	protected static $notice_msg = '';
-
-	/**
 	 * Transient value for success note.
 	 *
 	 * @var string
@@ -71,15 +64,14 @@ class CX_CO_ADS_Settings {
 		$capability = 'edit_posts';
 		$function = array( __CLASS__, 'display_settings' );
 
-		$menu_page_hook_view = add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $parent_slug, $function );
+		$menu_page_hook_view = add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 	}
 
 	/**
 	* Display settings page.
 	*/
    public static function display_settings() {
-
-		if( ! current_user_can( 'edit_posts' ) ) {
+		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_die( __( 'You do not have sufficient permission to access this page.', 'cx-co-ads' ) );
 	  	}
 
