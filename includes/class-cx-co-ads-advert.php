@@ -25,10 +25,10 @@ class CX_CO_ADS_Advert {
 	 * @since 1.0.0
 	 */
 	public static function register_meta() {
-        // Ads.
-		register_meta( 'post', 'cx_co_ads_ad_link', array(
+		// Toggle overriding global ads settings.
+		register_meta( 'post', 'cx_co_ads_override_global_settings', array(
 			'show_in_rest'      => true,
-			'type'              => 'string',
+			'type'              => 'boolean',
 			'single'            => true,
 			'sanitize_callback' => 'sanitize_text_field',
 			'auth_callback'     => function() { 
@@ -46,6 +46,18 @@ class CX_CO_ADS_Advert {
 				return current_user_can( 'edit_posts' );
 			}
 		));
+
+		// Ads shortcode.
+		register_meta( 'post', 'cx_co_ads_ad_shortcode', array(
+			'show_in_rest'      => true,
+			'type'              => 'string',
+			'single'            => true,
+			'sanitize_callback' => 'sanitize_text_field',
+			'auth_callback'     => function() { 
+				return current_user_can( 'edit_posts' );
+			}
+		));
+
 	
     }
 
