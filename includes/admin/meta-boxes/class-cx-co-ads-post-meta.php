@@ -35,9 +35,10 @@ class CX_CO_ADS_Post_Meta {
 			return $post_id;
 		}
 
-        update_post_meta( $post_id, 'cx_co_ads_ad_link', sanitize_text_field( $_POST['cx_co_ads_ad_link'] ) );
-		update_post_meta( $post_id, 'cx_co_ads_enable_ads', sanitize_text_field( $_POST['cx_co_ads_enable_ads'] ) );
-
+		update_post_meta( $post_id, 'cx_co_ads_ad_override_global_settings', sanitize_text_field( $_POST['cx_co_ads_override_global_settings'] ) );
+        update_post_meta( $post_id, 'cx_co_ads_enable_ads', sanitize_text_field( $_POST['cx_co_ads_enable_ads'] ) );
+		update_post_meta( $post_id, 'cx_co_ads_ad_shortcode', sanitize_text_field( $_POST['cx_co_ads_ad_shortcode'] ) );
+		
 		return $post_id;
 	}
 

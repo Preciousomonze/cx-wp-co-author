@@ -51,6 +51,8 @@ final class CX_CO_ADS {
         // Load the textdomain.
 		add_action( 'init', array( __CLASS__, 'load_textdomain' ) );
 
+        // On Activation, run things :).
+        register_activation_hook( __FILE__, array( __CLASS__, 'on_activation' ) );
 	    // Add Block Editor compatibility.
         add_action( 'enqueue_block_editor_assets', array( __CLASS__, 'enqueue_assets' ) );
 
@@ -105,6 +107,7 @@ final class CX_CO_ADS {
 
         // Admin side.
         if ( self::is_request( 'admin' ) ) {
+			include_once CX_CO_ADS_ABSPATH . 'includes/admin/class-cx-co-ads-settings.php';
 			include_once CX_CO_ADS_ABSPATH . 'includes/admin/meta-boxes/class-cx-co-ads-post-meta.php';
 		}
     }
@@ -138,6 +141,16 @@ final class CX_CO_ADS {
 		// wp_enqueue_script( 'cx-coa-co-authors-js', self::plugin_url() . '/assets/js/co-authors' . $suffix . '.js', array( 'jquery' ), CX_CO_ADS_PLUGIN_VERSION );
 
 	}
+
+    /**
+     * Do stuff on activation.
+     */
+    public static function on_activation() {
+        // Enable this option if the options table doesn't have it.
+        if ( ! get_option( 'cx_co_ads_enable_ads', false ) ) {
+            update_option( 'cx_co_ads_enable_ads', 'yes', false );
+        }
+    }
 
 	/*-----------------------------------------------------------------------------------*/
 	/* Block Editor Functions */
