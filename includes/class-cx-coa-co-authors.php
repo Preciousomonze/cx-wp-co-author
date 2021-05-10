@@ -59,7 +59,7 @@ class CX_COA_Co_Authors {
         foreach( $co_authors_data as $co_author ) {
 			$user = get_user_by( 'login', $co_author );
 
-			if ( $user && $user->ID !== $current_author ) {
+			if ( $user && $user->ID !== (int)$current_author ) {
 				$_co_authors_details['user_obj'] = $user;
 
 				// Get the meta.
