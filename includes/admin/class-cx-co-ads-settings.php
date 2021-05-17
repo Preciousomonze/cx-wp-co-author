@@ -43,6 +43,7 @@ class CX_CO_ADS_Settings {
     public static function init() {
        	self::$current_user_id = get_current_user_id();
 		add_action( 'admin_menu', array( __CLASS__, 'menu'), 10 );
+		add_action ('wp_loaded', array( __CLASS__, 'notice_redirect' ) );
 
 		// For displaying notices, can't even remember why I did all this.
 		if( isset( $_GET[ 'notice' ] ) ) {
@@ -110,23 +111,32 @@ class CX_CO_ADS_Settings {
 	 */
 	public static function validate() {
 		if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['cx-co-ads-settings'] ) && wp_verify_nonce( $_POST['cx-co-ads-settings'], 'cx-co-ads-settings' ) ) {
-
 			$checkbox  = sanitize_text_field( $_POST['cx_co_ads_enable_ads'] );
 			$shortcode = sanitize_text_field( $_POST['cx_co_ads_ad_shortcode'] );
-			
+
 			update_option( 'cx_co_ads_enable_ads', $checkbox, false );
 			update_option( 'cx_co_ads_ad_shortcode', $shortcode, false );
 
 			// Delete transient for the failed value.
 			delete_transient( self::$transient_f_value . self::$current_user_id );
 			set_transient( self::$transient_s_value . self::$current_user_id, 'Ad Settings updated successfully.', self::$transient_timeout );
-
-			// Redirect safely to show new value.
-			wp_safe_redirect( add_query_arg( array( 'notice' => true ) ) );
-			exit();
 		}
 	}
 
+	/**
+	 * Helps to do proper notice redirect.
+	 *
+	 * This is so as to prevent the annoying header error
+	 * that shows on live server.
+	 */
+	public static function notice_redirect() {
+		if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['cx-co-ads-settings'] ) && wp_verify_nonce( $_POST['cx-co-ads-settings'], 'cx-co-ads-settings' ) ) {
+			// Redirect safely to show new value.
+			wp_safe_redirect( add_query_arg( array( 'notice' => true ) ) );
+
+		}
+
+	}
 
 	/**
 	 * Successful submit message.
@@ -135,6 +145,7 @@ class CX_CO_ADS_Settings {
 		$t_value = self::$transient_s_value . self::$current_user_id;
 		$success_f_value = self::$transient_f_value . self::$current_user_id; // Remove the failed transient value.
 		$transient = get_transient( $t_value );
+
 		if ( ! empty( $transient ) ) {
 		?>
 		<div class="notice notice-success is-dismissible">

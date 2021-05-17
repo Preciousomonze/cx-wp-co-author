@@ -139,10 +139,10 @@ class CX_CO_ADS_Advert {
 		}
 
 		$ads_content = '<div class="cx-co-ads-adspace">' . do_shortcode( $ad_shortcode ). '</div>';
-		
+
 		for ( $i = 0; $i < count( $paragraphs ); $i++ ) {
 			$p_num              = $i + 1;
-			$current_ad_section = $ad_sections[ $section_count ];
+			$current_ad_section = isset( $ad_sections[ $section_count ] ) ? $ad_sections[ $section_count ] : 0;
 
 			// Is the current paragraph equal to the current section we need to add ads?
 			if ( $p_num  === $current_ad_section  ) {
