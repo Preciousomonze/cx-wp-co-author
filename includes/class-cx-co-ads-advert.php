@@ -110,11 +110,10 @@ class CX_CO_ADS_Advert {
 				return $content;
 			}
 			else { // Get global shortcode.
-				$ad_shortcode = trim( get_option( 'cx_co_ads_ad_shortcode', false ) );
+				$ad_shortcode = trim( stripslashes( get_option( 'cx_co_ads_ad_shortcode', '' ) ) );
 				
 			}
 		}
-
 	
 		if ( empty( $ad_shortcode ) ) {
 			return $content;

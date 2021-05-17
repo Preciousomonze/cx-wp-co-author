@@ -60,9 +60,9 @@ class CX_CO_ADS_Settings {
 		// Menu stuff.
 		$page_title = __( 'Ads Global Settings', 'cx-co-ads' );
 		$menu_title = __('Ads Settings', 'cx-co-ads' );
-		$menu_slug = 'cx-co-ads-ad-settings';
+		$menu_slug  = 'cx-co-ads-ad-settings';
 		$capability = 'edit_posts';
-		$function = array( __CLASS__, 'display_settings' );
+		$function   = array( __CLASS__, 'display_settings' );
 
 		$menu_page_hook_view = add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 	}
@@ -92,8 +92,8 @@ class CX_CO_ADS_Settings {
 			</div>
 			<div>
 				<br>
-				<label>Ads ShortCode <small>(Shortcode to put globally on all posts. e.g <code>[asdd]</code></small></label><br>
-				<input type="text" value="<?php echo get_option( 'cx_co_ads_ad_shortcode', '' )  ?>" name="cx_co_ads_ad_shortcode"><br><br>
+				<label>Ads ShortCode <small>(Shortcode to put globally on all posts. Make sure you enclose in double quotes e.g <code>[adinserter block="1"]</code>)</small></label><br>
+				<input type="text" value='<?php echo stripslashes( get_option( 'cx_co_ads_ad_shortcode', '' ) ) ?>' name="cx_co_ads_ad_shortcode"><br><br>
 			</div>
 			<div class="col-sm-3">
 				<button type="submit">Submit</button>
@@ -111,8 +111,8 @@ class CX_CO_ADS_Settings {
 	public static function validate() {
 		if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['cx-co-ads-settings'] ) && wp_verify_nonce( $_POST['cx-co-ads-settings'], 'cx-co-ads-settings' ) ) {
 
-			$checkbox = filter_input( INPUT_POST, 'cx_co_ads_enable_ads' );
-			$shortcode = filter_input( INPUT_POST, 'cx_co_ads_ad_shortcode' );
+			$checkbox  = sanitize_text_field( $_POST['cx_co_ads_enable_ads'] );
+			$shortcode = sanitize_text_field( $_POST['cx_co_ads_ad_shortcode'] );
 			
 			update_option( 'cx_co_ads_enable_ads', $checkbox, false );
 			update_option( 'cx_co_ads_ad_shortcode', $shortcode, false );
