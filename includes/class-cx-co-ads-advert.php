@@ -114,7 +114,7 @@ class CX_CO_ADS_Advert {
 				
 			}
 		}
-	
+
 		if ( empty( $ad_shortcode ) ) {
 			return $content;
 		}
