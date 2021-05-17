@@ -78,7 +78,7 @@ class CX_CO_ADS_Settings {
 		// Delete transient for the other values, incase.
 		delete_transient( self::$transient_s_value . self::$current_user_id );
 		delete_transient( self::$transient_f_value . self::$current_user_id );
-		  
+
 		self::validate();
 		?>
 		<div class="cx-co-ads-checkbox-holder">
