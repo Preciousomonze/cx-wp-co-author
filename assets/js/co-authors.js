@@ -16,10 +16,11 @@ jQuery( document ).ready( function( $ ){
 
 		authorData.forEach( function( author ) {
 			
-			authorName = author.name;
-			authorLink = author.link;
+			authorName    = author.name;
+			authorLink    = author.link;
+			authorAvatar  = author.avatar;
 
-			html += ', <a href="' + authorLink + '" rel="author">'	+ authorName + '</a>';
+			html += ', <a href="' + authorLink + '" rel="author">' + authorAvatar + authorName + '</a>';
 		} );
 
 		/** 

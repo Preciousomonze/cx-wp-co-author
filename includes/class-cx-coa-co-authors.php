@@ -119,10 +119,11 @@ class CX_COA_Co_Authors {
 			$co_author = $co_author_details['user_obj'];
     
            	$span_data[] = array(
-            	'link' => ( ! empty( $co_author->user_url ) ? $co_author->user_url : get_author_posts_url( $co_author->ID ) ),
-                'name' => $co_author->display_name,
+            	'link'    => ( ! empty( $co_author->user_url ) ? $co_author->user_url : get_author_posts_url( $co_author->ID ) ),
+                'name'    => $co_author->display_name,
+				'avatar'  => get_avatar( $co_author->ID, 30 );
             );
-            
+              
         }
 
         // Add it to a span tag with data attribute.
