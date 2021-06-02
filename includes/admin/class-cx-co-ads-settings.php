@@ -81,6 +81,16 @@ class CX_CO_ADS_Settings {
 		delete_transient( self::$transient_f_value . self::$current_user_id );
 
 		self::validate();
+
+		$shortcodes  = CX_CO_ADS_Advert::global_shortcodes_sorting( stripslashes( get_option( 'cx_co_ads_ad_shortcode', '' ) ) );
+		$shortcode_1 = '';
+		$shortcode_2 = '';
+
+		if ( is_array( $shortcodes ) ) {
+			$shortcode_1 = $shortcodes[0];
+			$shortcode_2 = ( isset( $shortcodes[1] ) ? $shortcodes[1] : '' );
+		}
+
 		?>
 		<div class="cx-co-ads-checkbox-holder">
 			<form method="post">
@@ -92,9 +102,12 @@ class CX_CO_ADS_Settings {
 				<?php  wp_nonce_field( 'cx-co-ads-settings', 'cx-co-ads-settings' ); ?>
 			</div>
 			<div>
+			<br>
+				<label>Ads ShortCode 1<small>(Shortcode 1 to put globally on all posts for first ad. Make sure you enclose in double quotes e.g <code>[adinserter block="1"]</code>)</small></label><br>
+				<input type="text" value='<?php echo $shortcode_1; ?>' name="cx_co_ads_ad_shortcode[]"><br><br>
 				<br>
-				<label>Ads ShortCode <small>(Shortcode to put globally on all posts. Make sure you enclose in double quotes e.g <code>[adinserter block="1"]</code>)</small></label><br>
-				<input type="text" value='<?php echo stripslashes( get_option( 'cx_co_ads_ad_shortcode', '' ) ) ?>' name="cx_co_ads_ad_shortcode"><br><br>
+				<label>Ads ShortCode 2<small>(Shortcode 2 to put globally on all posts for second ad. Make sure you enclose in double quotes e.g <code>[adinserter block="1"]</code>)</small></label><br>
+				<input type="text" value='<?php echo $shortcode_2; ?>' name="cx_co_ads_ad_shortcode[]"><br><br>
 			</div>
 			<div class="col-sm-3">
 				<button type="submit">Submit</button>
@@ -107,13 +120,13 @@ class CX_CO_ADS_Settings {
 
 	/**
 	 * Handles validation.
-	 *
 	 */
 	public static function validate() {
 		if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['cx-co-ads-settings'] ) && wp_verify_nonce( $_POST['cx-co-ads-settings'], 'cx-co-ads-settings' ) ) {
 			$checkbox  = sanitize_text_field( $_POST['cx_co_ads_enable_ads'] );
-			$shortcode = sanitize_text_field( $_POST['cx_co_ads_ad_shortcode'] );
-
+			var_dump( $_POST['cx_co_ads_ad_shortcode'] );
+			$shortcode = sanitize_text_field( CX_CO_ADS_Advert::global_shortcodes_sorting( $_POST['cx_co_ads_ad_shortcode'] ) );
+			var_dump( $shortcodes );
 			update_option( 'cx_co_ads_enable_ads', $checkbox, false );
 			update_option( 'cx_co_ads_ad_shortcode', $shortcode, false );
 

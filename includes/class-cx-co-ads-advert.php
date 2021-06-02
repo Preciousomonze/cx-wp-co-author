@@ -81,7 +81,8 @@ class CX_CO_ADS_Advert {
 		#######
 
 		$ad_post_globe_override = false;
-		$ad_shortcode = false;
+		$ad_shortcode           = false;
+		$is_shortcode_global    = false;
 
 		// Is global settings overriden for this post?
 		if ( metadata_exists( 'post', $post->ID, 'cx_co_ads_override_global_settings' ) &&
@@ -110,8 +111,8 @@ class CX_CO_ADS_Advert {
 				return $content;
 			}
 			else { // Get global shortcode.
-				$ad_shortcode = trim( stripslashes( get_option( 'cx_co_ads_ad_shortcode', '' ) ) );
-				
+				$ad_shortcode = self::global_shortcodes_sorting( trim( stripslashes( get_option( 'cx_co_ads_ad_shortcode', '' ) ) ) );
+				$is_shortcode_global = true;
 			}
 		}
 
@@ -138,16 +139,29 @@ class CX_CO_ADS_Advert {
 			return $content;
 		}
 
-		$ads_content = '<div class="cx-co-ads-adspace">' . do_shortcode( $ad_shortcode ). '</div>';
+		/** 
+		 * Let's check if it was global shortcode, cause that one has 2, shaa
+		 * it must be the same amount as ad_sections array, if not, oyo shaa.
+		 */
+		$ad_paragraph_index = 0; // Useful to know which index we are in the ad paragraph.
+
+		if ( $is_shortcode_global ) { // Na Array something.
+			foreach ( $ad_shortcode as $key => $value ) {
+				$ads_content[] = ( ! empty( $value ) ? '<div class="cx-co-ads-adspace">' . do_shortcode( $value ). '</div>' : '' );
+			}
+		} else {
+			$ads_content = '<div class="cx-co-ads-adspace">' . do_shortcode( $ad_shortcode ). '</div>';
+		}
 
 		for ( $i = 0; $i < count( $paragraphs ); $i++ ) {
 			$p_num              = $i + 1;
 			$current_ad_section = isset( $ad_sections[ $section_count ] ) ? $ad_sections[ $section_count ] : 0;
 
 			// Is the current paragraph equal to the current section we need to add ads?
-			if ( $p_num  === $current_ad_section  ) {
-				$paragraphs[ $i ] .= $ads_content;
+			if ( $p_num  === $current_ad_section ) {
+				$paragraphs[ $i ] .= ( ! is_array( $ads_content ) ? $ads_content : $ads_content[ $ad_paragraph_index ] );
 				++$section_count;
+				++$ad_paragraph_index;
 			}
 		}
 
@@ -181,9 +195,43 @@ class CX_CO_ADS_Advert {
         return in_array( $plugin, $active_plugins ) || array_key_exists( $plugin, $active_plugins );
 
 	}
+	/**
+	 * Weird naming, helps to sort the global settings shortcodes properly.
+	 *
+	 * @param array|JSON $data If json, converts to array data, else, vice verca.
+	 *
+	 */
+	public static function global_shortcodes_sorting( $data ) {
+		$result = null;
+		if ( empty( $data ) ) {
+			return null;
+		}
+
+	 	if ( is_array( $data ) ) { // Should be an array, if you pass another thing, oyo, i don tire.
+			$result = json_encode( $data );
+		} else if ( self::isJSON( $data ) ) { // JSON.
+			$result = json_decode( $data, true );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Check if its JSON, PHP shaa.
+	 *
+	 * @param mixed $data
+	 * @return bool
+	 */
+	public static function isJSON( $data ) {
+		$result = json_decode( $data, true );
+
+		if ( JSON_ERROR_NONE === json_last_error() ) {
+			// JSON is valid.
+			return true;
+		}
+		return false;
+	}
 
 }
-
-
 
 CX_CO_ADS_Advert::init();
